@@ -1,24 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-// DERIV_APP_ID identifies your registered app to the new Options API
-// (sent as the Deriv-App-ID header). Use the numeric App ID shown on your
-// app's page in the Deriv dashboard — the same place you got DERIV_CLIENT_ID.
-// const DERIV_APP_ID = "33DVkNh79fJ9qmKOlPNI1"; // ⚠️ replace with your own registered app's numeric ID
-
-const APP_ID = 1089;
-const WS_URL = `wss://ws.binaryws.com/websockets/v3?app_id=${APP_ID}`;
 // ─── Deriv OAuth (PKCE) ───────────────────────────────────────────────────────
 // Deriv retired the old implicit-grant flow on oauth.deriv.com (which just
 // appended ?token1=... to the redirect URL). Logging in now goes through
-// auth.deriv.com using OAuth 2.0 + PKCE, and it requires an app that YOU
-// register on https://developers.deriv.com/dashboard with this site's exact
-// URL as the redirect URI. The shared app_id 1089 has no redirect URI
-// registered for this domain, which is why clicking "Connect with Deriv"
-// did nothing useful — there's nowhere valid for Deriv to send you back to.
+// auth.deriv.com using OAuth 2.0 + PKCE, and it requires an app registered
+// on https://developers.deriv.com/dashboard with this site's exact URL as
+// one of its Redirect URLs.
 //
-// Fill these in with your own values from the Deriv dashboard:
-const DERIV_CLIENT_ID = "33DVkNh79fJ9qmKOlPNI1"; // e.g. "app12345"
-const DERIV_REDIRECT_URI = window.location.origin + window.location.pathname;
+// Your Deriv dashboard only has ONE id column — "App ID" — and that same
+// number is used both as the OAuth client_id and as the Deriv-App-ID header
+// for REST calls. Paste it below.
+const DERIV_APP_ID = "YOUR_APP_ID"; // the numeric "App ID" column from your Deriv dashboard
+
+// Pinned to the site root so it's always the same string regardless of what
+// page the user clicked "Connect with Deriv" from. Register this EXACT
+// string (scheme + domain + trailing slash) as a Redirect URL in the
+// dashboard — Deriv requires a byte-for-byte match.
+const DERIV_REDIRECT_URI = window.location.origin + "/";
 const DERIV_AUTH_BASE = "https://auth.deriv.com/oauth2";
 const OAUTH_SCOPES = "trade account_manage";
 
@@ -48,7 +46,7 @@ async function startDerivLogin() {
 
   const params = new URLSearchParams({
     response_type: "code",
-    client_id: DERIV_CLIENT_ID,
+    client_id: String(DERIV_APP_ID),
     redirect_uri: DERIV_REDIRECT_URI,
     scope: OAUTH_SCOPES,
     state: csrfToken,
@@ -86,7 +84,7 @@ async function extractDerivTokenFromURL() {
     const body = new URLSearchParams({
       grant_type: "authorization_code",
       code,
-      client_id: DERIV_CLIENT_ID,
+      client_id: String(DERIV_APP_ID),
       redirect_uri: DERIV_REDIRECT_URI,
       code_verifier: codeVerifier,
     });
@@ -393,7 +391,7 @@ function MoMoModal({ type, onClose }) {
 // ─── Login page ───────────────────────────────────────────────────────────────
 function LoginPage() {
   const handleDerivAuth = () => { startDerivLogin(); };
-  const notConfigured = DERIV_CLIENT_ID === "YOUR_DERIV_CLIENT_ID";
+  const notConfigured = DERIV_APP_ID === "YOUR_APP_ID";
 
   return (
     <div style={{ minHeight:"100vh", background:"#f0f0f8", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'Inter',system-ui,sans-serif", padding:20 }}>
@@ -413,7 +411,7 @@ function LoginPage() {
 
           {notConfigured && (
             <div style={{ background:"#fffbeb", border:"1px solid #fde68a", borderRadius:10, padding:"10px 14px", marginBottom:20, fontSize:12, color:"#92400e", lineHeight:1.6 }}>
-              ⚠️ Set <code>DERIV_CLIENT_ID</code> (and make sure this page's exact URL is registered as the redirect URI) in your Deriv dashboard before this button will work.
+              ⚠️ Set <code>DERIV_APP_ID</code> (and make sure this page's exact URL is registered as the redirect URI) in your Deriv dashboard before this button will work.
             </div>
           )}
 
