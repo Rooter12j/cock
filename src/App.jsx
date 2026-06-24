@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 // DERIV_APP_ID identifies your registered app to the new Options API
 // (sent as the Deriv-App-ID header). Use the numeric App ID shown on your
 // app's page in the Deriv dashboard — the same place you got DERIV_CLIENT_ID.
-const DERIV_APP_ID = 1089; // ⚠️ replace with your own registered app's numeric ID
+const DERIV_APP_ID = "33DVkNh79fJ9qmKOlPNI1"; // ⚠️ replace with your own registered app's numeric ID
 
 // ─── Deriv OAuth (PKCE) ───────────────────────────────────────────────────────
 // Deriv retired the old implicit-grant flow on oauth.deriv.com (which just
