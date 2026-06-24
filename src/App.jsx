@@ -15,7 +15,7 @@ const DERIV_APP_ID = 1089; // ⚠️ replace with your own registered app's nume
 // did nothing useful — there's nowhere valid for Deriv to send you back to.
 //
 // Fill these in with your own values from the Deriv dashboard:
-const DERIV_CLIENT_ID = "YOUR_DERIV_CLIENT_ID"; // e.g. "app12345"
+const DERIV_CLIENT_ID = "33DVkNh79fJ9qmKOlPNI1"; // e.g. "app12345"
 const DERIV_REDIRECT_URI = window.location.origin + window.location.pathname;
 const DERIV_AUTH_BASE = "https://auth.deriv.com/oauth2";
 const OAUTH_SCOPES = "trade account_manage";
