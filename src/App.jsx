@@ -10,7 +10,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 // Your Deriv dashboard only has ONE id column — "App ID" — and that same
 // number is used both as the OAuth client_id and as the Deriv-App-ID header
 // for REST calls. Paste it below.
-const DERIV_APP_ID = "YOUR_APP_ID"; // the numeric "App ID" column from your Deriv dashboard
+const DERIV_APP_ID = "33DVkNh79fJ9qmKOlPNI1"; // the numeric "App ID" column from your Deriv dashboard
 
 // Pinned to the site root so it's always the same string regardless of what
 // page the user clicked "Connect with Deriv" from. Register this EXACT
